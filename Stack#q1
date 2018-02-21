@@ -17,3 +17,4 @@ class Pilha:
     def lenght(self):
         return len(self.items)
         
+pilha = Pilha()
