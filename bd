@@ -1,0 +1,121 @@
+create table Cliente(
+    CodCliente integer primary key,
+    Nome varchar(50),
+    Tel char(10),
+    Endereco varchar(100),
+    CPF numeric (11),
+    Email varchar(50)
+);
+
+create table Produto(
+    CodProd integer primary key,
+    Custo numeric (11,2),
+    Descricao text,
+    Preco numeric(11,2),
+    Nome varchar(50)
+);
+
+create table Vendedor(
+    CodVdd integer primary key,
+    CPF numeric(11),
+    ValorDaComissao numeric (4,2),
+    Nome varchar(50),
+    Endereco varchar(100)
+);
+
+create table Vendas(
+    NumVend integer primary key,
+    ValorTotal numeric (11,2),
+    CodVdd integer references Vendedor (CodVdd),
+    CodCliente integer references Cliente(CodCliente)
+);
+
+create table ItemVenda(
+    CodProd integer references Produto(CodProd),
+    NumVend integer references Vendas(NumVend),
+    vUnitario numeric (11,2),
+    quantidade integer,
+    primary key (CodProd, NumVend)
+);
+
+create table Motorista (
+    CodMotorista integer primary key,
+    CPF numeric(11),
+    CNH numeric(10),
+    Nome varchar(50),
+    Endereco varchar(100)
+);
+
+create table Veiculo (
+    Placa char(7) primary key,
+    Capacidade integer
+);
+
+create table Entrega(
+    hora time ,
+    data date,
+    NumVend integer references Vendas(NumVend),
+    Placa char(7) references Veiculo(Placa),
+    CodMotorista integer references Motorista(CodMotorista),
+    primary key (hora, data)
+);
+
+insert into Cliente (CodCliente, Nome, Tel, Endereco, CPF, Email) values
+(4002, 'João', 3333344444, 'Centro - Guarabira', 22233355588, 'joãozinho@gmail.com'),
+(8922, 'Maria', 4444455555, 'Mangabeira III - João Pessoa', 33311122299, 'mariazinha@outlook.com'),
+(4003, 'Chiquinha', 0099866554, 'Centro - João Pessoa', 66657844321, 'chiquinha@facebook.com');
+
+insert into Produto (CodProd, Custo, Descricao, Preco, Nome) values
+(157, 199.99, 'made in Polônia', 499.99, 'penteadeira'),
+(007, 199.99, 'made in China', 599.99, 'sofá'),
+(876, 149.99, 'made in Paaraguai', 299.99, 'microondas');
+
+insert into Vendedor (CodVdd, CPF, ValorDaComissao, Nome, Endereco) values
+(24, 89066532177, 25.75, 'Lucas', 'centro - guarabira'),
+(88, 99855466231, 13.99, 'Chico', 'centro pirpirituba'),
+(65, 99077833213, 67.99, 'Marcos', 'centro - araçagi');
+
+insert into Vendas (NumVend, ValorTotal, CodVdd, CodCliente) values
+(578, 3334.99, 24, 4002),
+(543, 99753.88, 88, 8922),
+(564, 88727.99, 65, 4003);
+
+insert into ItemVenda (CodProd, NumVend, vUnitario, quantidade) values
+(157, 578, 449.99, 4),
+(007, 543, 886.99, 15),
+(876, 564, 665.99, 72);
+
+insert into Motorista (CodMotorista, CPF, CNH, Nome, Endereco) values
+(444, 99866522421, 7659935123, 'Luis Carlos', 'rua dos alfeneiros, 4, surrey'),
+(555, 75316648967, 9836200756, 'Maria Joaquina', 'cacimba de dentro - pb'),
+(666, 87452778564, 6666666666, 'Lucifer Morningstar', 'los angeles');
+
+insert into Veiculo (Placa, Capacidade) values
+(6666666, 22),
+(7453890, 15),
+(8764445, 90);
+
+insert into Entrega (hora, data, NumVend, Placa, CodMotorista) values
+('13:56', '2018/3/1', 578, 6666666, 444),
+('18:45', '2018/3/1', 543, 7453890, 555),
+('19:00', '2018/02/28', 564, 8764445, 666);
+
+update Cliente set Nome = 'Joca' where CodCliente = 4002;
+update Produto set Custo = 1000.00 where CodProd = 007;
+update Vendedor set Nome = 'Letisgo' where CodVdd = 24;
+update Vendas set ValorTotal = 99987.97 where CodVdd = 24;
+update ItemVenda set vUnitario = 875048.99 where CodProd = 007;
+update Motorista set Nome = 'João do Ovo' where CodMotorista = 444;
+update Veiculo set Capacidade = 55 where Placa = 6666666;
+update Entrega set data = '2018/5/2' where hora = '13:56'
+
+delete from Cliente where CodCliente = 8922;
+
+select * from Cliente;
+select * from Produto;
+select * from Vendedor;
+select * from Vendas;
+select * from ItemVenda;
+select * from Motorista;
+select * from Veiculo;
+select * from Entrega;
